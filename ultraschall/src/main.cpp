@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
-const int triggerPin = 9;
-const int echoPin = 10;
+const int triggerPin = 12;
+const int echoPin = 13;
 
 double speedOfSound = 0;
 

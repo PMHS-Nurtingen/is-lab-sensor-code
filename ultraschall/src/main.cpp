@@ -13,7 +13,7 @@ double speedOfSound = 0;
  * @return: Die Schallgeschwindigkeit in der Luft bei der angegebenen Temperatur
  */
 double getSpeedOfSound(int temperatureCelsius) {
-    return (331.5 + 0.6 * temperatureCelsius) / 10000;
+    return (331.5 + 0.6 * temperatureCelsius);
 }
 
 
@@ -25,19 +25,27 @@ void setup() {
 }
 
 void loop() {
+    Serial.println("---- Neue Messung");
     digitalWrite(triggerPin, LOW);
     delayMicroseconds(2);
     digitalWrite(triggerPin, HIGH);
     delayMicroseconds(10);
     digitalWrite(triggerPin, LOW);
-    unsigned long duration = pulseIn(echoPin, HIGH) / 2;  // Durch 2 weil nur einfache Zeit nötig
-
+    unsigned long duration = pulseIn(echoPin, HIGH) / 2;  // in Mikrosekunden(µs); Durch 2 weil nur einfache Zeit nötig
+    float durationS = (float) duration / 1000000; // 1 s = 1.000.000 µs
     if (duration == 0) {
         Serial.println("Fehler in der Messung");
     }
 
-    // Calculate distance (cm)
-    Serial.println("Distanz: ");
-    Serial.print(duration * speedOfSound);
-    Serial.print("cm");
+    Serial.print("Dauer 1-Strecke in Mikrosekunden: ");
+    Serial.println(duration);
+    Serial.print("Dauer 1-Strecke in Sekunden: ");
+    Serial.println(durationS, 7);
+    Serial.print("Schallgeschwindigkeit (m/s): ");
+    Serial.println(speedOfSound);
+    Serial.print("Distanz: ");
+    Serial.print(durationS * speedOfSound * 100); // 1m = 100cm
+    Serial.println(" cm");
+
+    delay(1000); // Nur 1 Scan pro Sekunde
 }

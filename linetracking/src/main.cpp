@@ -1,22 +1,26 @@
-#include <linetracking.h>
+#include <Arduino.h>
 
-LineTracking lineTracking(A2, A1, A0);
+// Definition der Pins, die für die einzelnen Sensoren verwendet werden.
+//  
+const int pin = 13;
 
 void setup() {
+  // Beginnen Sie die serielle Kommunikation für die Fehlersuche
   Serial.begin(9600);
-}
 
-void testLineTracking() {
-    Serial.print("Left/Center/Right ");
-    Serial.print(lineTracking.left());
-    Serial.print(" / ");
-    Serial.print(lineTracking.center());
-    Serial.print(" / ");
-    Serial.println(lineTracking.right());
+  // Setzen Sie die Pins als Eingänge
+  pinMode(pin, INPUT);
 }
 
 void loop() {
-  Serial.println("---- Neue Messung");
-  testLineTracking();
-  delay(1000); // Nur 1 Scan pro Sekunde
+  // Lesen Sie den Status jedes Sensors
+  bool linieErkannt = digitalRead(pin);
+
+  // Drucken Sie den Status jedes Sensors auf die serielle Konsole
+  Serial.println("");
+  Serial.print("Linie erkannt: ");
+  Serial.print(linieErkannt);
+
+  // Warten Sie eine kurze Zeit, bevor Sie die nächste Messung durchführen
+  delay(500);
 }
